@@ -1,0 +1,1298 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Challenges Management</title>
+    <link rel="stylesheet" href="/css/footerStyle.css">
+    <link rel="stylesheet" href="/css/headerStyle.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- link for font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Felschy Rewards admin panel for managing challenges">
+    <meta name="author" content="Felschy Rewards - Admin">
+
+    <style>
+        :root {
+            --primary: #6D6BE3;
+            --primary-dark: #5C5AD3;
+            --success: #3DD598;
+            --warning: #F4B740;
+            --danger: #FF5C5C;
+            --info: #4273FE;
+            --dark: #13151D;
+            --card-bg: #1C1F2E;
+            --card-darker: #252836;
+            --border-color: #2a2e40;
+            --text-light: #FFFFFF;
+            --text-muted: #8A8D9F;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-section {
+            padding: 30px 0;
+            min-height: calc(100vh - 300px);
+        }
+
+        .page-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .admin-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .admin-form label {
+            display: block;
+            margin-bottom: 5px;
+            color: var(--text-light);
+            font-weight: 500;
+            font-size: 14px;
+        }
+
+        .admin-form input,
+        .admin-form select {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 1px solid var(--border-color);
+            background: var(--card-darker);
+            color: var(--text-light);
+        }
+
+        .admin-form button {
+            background: var(--primary);
+            color: var(--text-light);
+            padding: 12px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 600;
+            margin-top: 10px;
+        }
+
+        .admin-form button:hover {
+            background: var(--primary-dark);
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 8px;
+            table-layout: fixed;
+        }
+
+        #challengesTableContainer {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-light);
+            vertical-align: middle;
+            height: 80px;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .admin-table th {
+            background-color: var(--card-darker);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-align: center;
+        }
+
+        .admin-table tr {
+            background-color: var(--card-bg);
+            transition: background-color 0.2s ease;
+            height: 80px;
+        }
+
+        .admin-table tr:hover {
+            background-color: var(--card-darker);
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table img {
+            width: 50px;
+            height: 50px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid var(--border-color);
+            display: block;
+            margin: 0 auto;
+        }
+
+        .admin-table .actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 10px;
+            white-space: nowrap;
+            height: 100%;
+        }
+
+        .admin-table .actions button {
+            padding: 8px 6px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            width: 90px;
+            height: 32px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
+        .admin-table .btn-complete {
+            background: #6D6BE3;
+            /* Updated purple color */
+            color: #FFFFFF;
+            box-shadow: 0 2px 4px rgba(109, 107, 227, 0.3);
+        }
+
+        .admin-table .btn-complete:hover {
+            background: #5C5AD3;
+            box-shadow: 0 4px 8px rgba(109, 107, 227, 0.5);
+        }
+
+        .admin-table .btn-winner {
+            background: #F4B740;
+            color: #13151D;
+            box-shadow: 0 2px 4px rgba(244, 183, 64, 0.3);
+        }
+
+        .admin-table .btn-winner:hover {
+            background: #e5ab35;
+            box-shadow: 0 4px 8px rgba(244, 183, 64, 0.5);
+        }
+
+        .admin-table .btn-paid {
+            background: #4273FE;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(66, 115, 254, 0.3);
+        }
+
+        .admin-table .btn-paid:hover {
+            background: #3563e0;
+            box-shadow: 0 4px 8px rgba(66, 115, 254, 0.5);
+        }
+
+        .admin-table .btn-delete {
+            background: #FF5C5C;
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(255, 92, 92, 0.3);
+        }
+
+        .admin-table .btn-delete:hover {
+            background: #e04e4e;
+            box-shadow: 0 4px 8px rgba(255, 92, 92, 0.5);
+        }
+
+        .admin-table .btn-disabled {
+            background: #333;
+            color: #777;
+            cursor: not-allowed;
+            box-shadow: none;
+        }
+
+        .admin-table .btn-disabled:hover {
+            transform: none;
+        }
+
+        .slot-search-results {
+            position: absolute;
+            background: #1C1F2E;
+            border: 1px solid #6D6BE3;
+            border-radius: 5px;
+            width: 100%;
+            max-height: 300px;
+            overflow-y: auto;
+            z-index: 100;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-top: 2px;
+        }
+
+        .slot-search-item {
+            padding: 12px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            border-bottom: 1px solid #2a2c3d;
+            transition: all 0.2s ease;
+        }
+
+        .slot-search-item:last-child {
+            border-bottom: none;
+        }
+
+        .slot-search-item:hover {
+            background: #252836;
+        }
+
+        .slot-search-item img {
+            width: 60px;
+            height: 60px;
+            object-fit: cover;
+            border-radius: 6px;
+            border: 2px solid #333;
+        }
+
+        .slot-search-item strong {
+            color: #FFFFFF;
+            font-size: 14px;
+            display: block;
+            margin-bottom: 4px;
+        }
+
+        .slot-search-item div {
+            color: #6D6BE3;
+            font-size: 12px;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: #1C1F2E;
+            margin: 15% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 500px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid #2a2e40;
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #2a2e40;
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: #6D6BE3;
+            /* Updated purple color */
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .badge-active {
+            background: #6D6BE3;
+            /* Updated purple color */
+            color: #FFFFFF;
+        }
+
+        .badge-completed {
+            background: #F4B740;
+            color: #13151D;
+        }
+
+        .badge-paid {
+            background: #4273FE;
+            color: #fff;
+        }
+
+        /* Notification styling */
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: #1C1F2E;
+            border-left: 4px solid #6D6BE3;
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease forwards;
+            position: relative;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            border-left-color: #3DD598;
+        }
+
+        .notification.error {
+            border-left-color: #FF5C5C;
+        }
+
+        .notification.warning {
+            border-left-color: #F4B740;
+        }
+
+        .notification .icon {
+            font-size: 20px;
+            margin-right: 12px;
+            color: #6D6BE3;
+        }
+
+        .notification.success .icon {
+            color: #3DD598;
+        }
+
+        .notification.error .icon {
+            color: #FF5C5C;
+        }
+
+        .notification.warning .icon {
+            color: #F4B740;
+        }
+
+        .notification .content {
+            flex: 1;
+        }
+
+        .notification .title {
+            color: #FFFFFF;
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .notification .message {
+            color: #cccccc;
+            font-size: 12px;
+        }
+
+        .notification .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: #6D6BE3;
+            animation: progress 3s linear forwards;
+        }
+
+        .notification.success .progress-bar {
+            background: #3DD598;
+        }
+
+        .notification.error .progress-bar {
+            background: #FF5C5C;
+        }
+
+        .notification.warning .progress-bar {
+            background: #F4B740;
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;" class="header">
+        <aside class="sidebar closed" id="sidebar">
+            <ul class="nav-links">
+                <div class="flexGrid">
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button class="toggle-btn" id="toggleBtn">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <li>
+                    <a href="/" class="d-flex align-center">
+                        <img src="/images/home.svg" alt="" class="img-fluid">
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/leaderboard" class="d-flex align-center">
+                        <img src="/images/leaderboard.svg" alt="" class="img-fluid">
+                        <span>Leaderboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/raffles" class="d-flex align-center">
+                        <img src="/images/ticket.svg" alt="" class="img-fluid">
+                        <span>Raffles</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/bonusHunt.svg" alt="" class="img-fluid">
+                        <span>Bonus Hunt</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/store.svg" alt="" class="img-fluid">
+                        <span>Store</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/challenges" class="d-flex align-center">
+                        <img src="/images/challenges.svg" alt="" class="img-fluid">
+                        <span>Challenges</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/liveStream.svg" alt="" class="img-fluid">
+                        <span>Live</span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/slots.svg" alt="" class="img-fluid">
+                        <span>Slots</span> <span class="soon">Soon</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/askedQuestions.svg" alt="" class="img-fluid">
+                        <span>Frequently Asked</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center condition">
+                        <img src="/images/term&condition.svg" alt="" class="img-fluid">
+                        <span>Terms of Service</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center exit"><img src="/images/exit.svg" alt="" class="img-fluid">
+                        <span>How to Register</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+            </ul>
+            <div class="branding">
+                <a href="#">
+                    <img src="/images/headerImage.png" alt="" class="img-fluid">
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <header>
+                <div class="container">
+                    <div class="row d-flex align-center justify-between">
+                        <div class="box">
+                            <a href="/">
+                                <img src="/images/headerLogo.png" alt="" class="img-fluid" style="max-width: 143px;">
+                            </a>
+                        </div>
+                        <div class="box">
+                            <div class="btn">
+                                <a href="/admin"><i class="fas fa-tachometer-alt"
+                                        style="margin-right: 5px;"></i>Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Simple admin breadcrumb -->
+            <div style="padding: 15px 0;">
+                <div class="container">
+                    <div style="display: flex; align-items: center; gap: 5px; font-size: 14px; color: #8A8D9F;">
+                        <a href="/" style="color: #8A8D9F; text-decoration: none;"><i class="fas fa-home"></i></a>
+                        <span>/</span>
+                        <a href="/admin" style="color: #8A8D9F; text-decoration: none;">Admin</a>
+                        <span>/</span>
+                        <span style="color: #6D6BE3;">Challenges</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Content -->
+            <section class="admin-section">
+                <div class="container">
+                    <div class="row">
+                        <h1 class="page-title"><i class="fas fa-trophy"></i> Challenges Management</h1>
+                    </div>
+
+                    <div class="row">
+                        <div class="admin-card">
+                            <h2
+                                style="color: var(--primary); margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                                Create New Challenge</h2>
+                            <form id="createChallengeForm" class="admin-form">
+                                <div>
+                                    <label for="slot">Slot Name:</label>
+                                    <div style="position: relative;">
+                                        <input type="text" id="slot" name="slot" required autocomplete="off"
+                                            placeholder="Type to search for slots...">
+                                        <div id="slotSearchResults" class="slot-search-results" style="display: none;">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div id="selectedSlotInfo"
+                                    style="background: #1C1F2E; padding: 15px; border-radius: 8px; display: none; border: 1px solid #2a2e40; box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2); margin-top: 10px;">
+                                    <h3
+                                        style="margin-top: 0; color: #6D6BE3; font-size: 16px; border-bottom: 1px solid #2a2e40; padding-bottom: 8px;">
+                                        Selected Slot</h3>
+                                    <div style="display: flex; align-items: center; gap: 15px; margin-top: 10px;">
+                                        <img id="slotPreviewImage" src="" alt="Slot preview"
+                                            style="width: 80px; height: 80px; object-fit: cover; border-radius: 5px; border: 2px solid #333;">
+                                        <div>
+                                            <div style="font-weight: bold; color: #FFFFFF; font-size: 16px; margin-bottom: 5px;"
+                                                id="slotPreviewName"></div>
+                                            <div style="color: #6D6BE3; font-size: 14px;" id="slotPreviewProvider">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <input type="hidden" id="provider" name="provider" required>
+                                <input type="hidden" id="imagelink" name="imagelink" required>
+
+                                <div>
+                                    <label for="reward">Reward (USD):</label>
+                                    <input type="number" id="reward" name="reward" required min="1" step="any">
+                                </div>
+
+                                <div>
+                                    <label for="requiredMultiplier">Required Multiplier:</label>
+                                    <input type="number" id="requiredMultiplier" name="requiredMultiplier" required
+                                        min="1" step="any">
+                                </div>
+
+                                <div>
+                                    <label for="minBet">Minimum Bet (USD):</label>
+                                    <input type="number" id="minBet" name="minBet" required min="1" step="any">
+                                </div>
+
+                                <button type="submit">Create Challenge</button>
+                            </form>
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="admin-card">
+                            <h2
+                                style="color: var(--primary); margin-top: 0; margin-bottom: 20px; font-size: 20px; font-weight: 600; border-bottom: 1px solid var(--border-color); padding-bottom: 10px;">
+                                Manage Challenges</h2>
+                            <div style="display: flex; gap: 10px; margin-bottom: 20px;">
+                                <button id="filter-all" class="filter-btn filter-active"
+                                    onclick="filterChallenges('all')"
+                                    style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-light); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s ease;">
+                                    All Challenges
+                                </button>
+                                <button id="filter-active" class="filter-btn" onclick="filterChallenges('active')"
+                                    style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-light); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s ease;">
+                                    <i class="fas fa-circle"
+                                        style="color: var(--primary); font-size: 10px; margin-right: 5px;"></i> Active
+                                </button>
+                                <button id="filter-completed" class="filter-btn" onclick="filterChallenges('completed')"
+                                    style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-light); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s ease;">
+                                    <i class="fas fa-circle"
+                                        style="color: var(--warning); font-size: 10px; margin-right: 5px;"></i>
+                                    Completed
+                                </button>
+                                <button id="filter-paid" class="filter-btn" onclick="filterChallenges('paid')"
+                                    style="background: var(--card-bg); border: 1px solid var(--border-color); color: var(--text-light); padding: 10px 15px; border-radius: 5px; cursor: pointer; font-weight: 500; transition: all 0.2s ease;">
+                                    <i class="fas fa-circle"
+                                        style="color: var(--info); font-size: 10px; margin-right: 5px;"></i> Paid
+                                </button>
+                            </div>
+
+                            <div id="challengesTableContainer">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">ID</th>
+                                            <th style="width: 7%;">Image</th>
+                                            <th style="width: 12%;">Slot</th>
+                                            <th style="width: 10%;">Provider</th>
+                                            <th style="width: 15%;">Requirement</th>
+                                            <th style="width: 8%;">Reward</th>
+                                            <th style="width: 8%;">Status</th>
+                                            <th style="width: 10%;">Winner</th>
+                                            <th style="width: 25%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="challengesTableBody">
+                                        <!-- Challenges will be populated here dynamically -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Winner Modal -->
+            <div id="winnerModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Set Winner</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="winnerForm" class="admin-form">
+                        <input type="hidden" id="winnerChallengeId">
+                        <div>
+                            <label for="winner">Winner Username:</label>
+                            <input type="text" id="winner" name="winner" required placeholder="Enter winner's username"
+                                style="font-size: 16px; padding: 12px 15px;">
+                        </div>
+                        <button type="submit" style="margin-top: 20px; padding: 12px 20px;">
+                            <i class="fas fa-trophy" style="margin-right: 8px;"></i>Save Winner
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <footer>
+                <div class="container">
+                    <div class="row rowFirst d-flex justify-between">
+                        <div class="box firstBoxFooter">
+                            <div class="logoContent">
+                                <div class="logo">
+                                    <img src="/images/headerLogo.png" alt="" class="img-fluid" style="width: 140px;">
+                                </div>
+                                <p>© 2025 All Rights Reserved</p>
+                            </div>
+                            <div class="logoPara d-flex align-center">
+                                <img src="/images/bcsmall.svg" alt="" class="img-fluid">
+                                <p>Official <span>BC.Game</span> Ambassador</p>
+                            </div>
+                        </div>
+                        <div class="box d-flex">
+                            <div class="sub-box">
+                                <h1>Platform</h1>
+                                <ul>
+                                    <li><a href="#">Live</a></li>
+                                    <li><a href="#">Leaderboard</a></li>
+                                    <li><a href="#">Raffles</a></li>
+                                    <li><a href="#">Bonus Hunt</a></li>
+                                    <li><a href="#">Store</a></li>
+                                    <li><a href="#">Challenges</a></li>
+                                    <li><a href="#">Stream</a></li>
+                                    <li><a href="#">Rewards</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>About</h1>
+                                <ul>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Gamble Responsibly</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>Community</h1>
+                                <ul class="icons">
+                                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 300 300" fill="none"
+                                            style="vertical-align: middle; position: relative; top: -2px;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M16.667 0H116.667V66.6667H150V33.3333H183.334V0H283.334V100H250V133.333H216.667V166.667H250V200H283.334V300H183.334V266.667H150V233.333H116.667V300H16.667V0Z"
+                                                fill="#797a89" />
+                                        </svg>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row secondRow gambling">
+                        <div class="underline"></div>
+                        <p>18+ | Gamble Responsibly | BeGambleAware. Most people gamble for fun and enjoyment. Do not
+                            think of
+                            gambling as a way to make money. Only gamble with money you can afford to lose. Set a money
+                            and time limit
+                            in advance. Never chase your losses. Don't use gambling to distract yourself from everyday
+                            problems.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Notification container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="/js/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elements
+            const createChallengeForm = document.getElementById('createChallengeForm');
+            const slotInput = document.getElementById('slot');
+            const providerInput = document.getElementById('provider');
+            const imagelinkInput = document.getElementById('imagelink');
+            const slotSearchResults = document.getElementById('slotSearchResults');
+            const selectedSlotInfo = document.getElementById('selectedSlotInfo');
+            const slotPreviewImage = document.getElementById('slotPreviewImage');
+            const slotPreviewName = document.getElementById('slotPreviewName');
+            const slotPreviewProvider = document.getElementById('slotPreviewProvider');
+            const notificationContainer = document.getElementById('notificationContainer');
+
+            // Notification function
+            function showNotification(type, title, message) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+
+                let icon = '';
+                switch (type) {
+                    case 'success':
+                        icon = 'fa-check-circle';
+                        break;
+                    case 'error':
+                        icon = 'fa-exclamation-circle';
+                        break;
+                    case 'warning':
+                        icon = 'fa-exclamation-triangle';
+                        break;
+                    default:
+                        icon = 'fa-info-circle';
+                }
+
+                notification.innerHTML = `
+                    <i class="fas ${icon} icon"></i>
+                    <div class="content">
+                        <div class="title">${title}</div>
+                        <div class="message">${message}</div>
+                    </div>
+                    <div class="progress-bar"></div>
+                `;
+
+                notificationContainer.appendChild(notification);
+
+                // Remove after animation
+                setTimeout(() => {
+                    notification.style.animation = 'slideIn 0.3s ease reverse forwards';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 3000);
+            }
+            const challengesTableBody = document.getElementById('challengesTableBody');
+            const winnerModal = document.getElementById('winnerModal');
+            const winnerForm = document.getElementById('winnerForm');
+            const winnerInput = document.getElementById('winner');
+            const winnerChallengeIdInput = document.getElementById('winnerChallengeId');
+            const closeModal = document.querySelector('.close');
+
+            let challenges = [];
+            let currentFilter = 'all';
+
+            // Fetch and display challenges
+            fetchChallenges();
+
+            // Event listeners
+            createChallengeForm.addEventListener('submit', createChallenge);
+            winnerForm.addEventListener('submit', setWinner);
+            closeModal.addEventListener('click', () => winnerModal.style.display = 'none');
+            window.addEventListener('click', (e) => {
+                if (e.target === winnerModal) winnerModal.style.display = 'none';
+            });
+
+            // Slot search functionality
+            let searchTimeout;
+            slotInput.addEventListener('keyup', function () {
+                clearTimeout(searchTimeout);
+                const query = this.value.trim();
+
+                if (query.length < 3) {
+                    slotSearchResults.style.display = 'none';
+                    return;
+                }
+
+                // Show loading spinner
+                slotSearchResults.innerHTML = '<div class="slot-search-item" style="justify-content: center;"><i class="fas fa-spinner fa-spin" style="color: #6D6BE3; font-size: 20px;"></i></div>';
+                slotSearchResults.style.display = 'block';
+
+                searchTimeout = setTimeout(() => {
+                    searchSlots(query);
+                }, 500);
+            });
+
+            // Functions
+            async function fetchChallenges() {
+                try {
+                    const response = await fetch('/api/admin/challenges');
+                    challenges = await response.json();
+                    displayChallenges();
+                } catch (error) {
+                    console.error('Error fetching challenges:', error);
+                    alert('Failed to load challenges. Please try again.');
+                }
+            }
+
+            function displayChallenges() {
+                let filteredChallenges = challenges;
+
+                // Apply filter
+                if (currentFilter === 'active') {
+                    filteredChallenges = challenges.filter(c => !c.completed);
+                } else if (currentFilter === 'completed') {
+                    filteredChallenges = challenges.filter(c => c.completed && !c.paid);
+                } else if (currentFilter === 'paid') {
+                    filteredChallenges = challenges.filter(c => c.paid);
+                }
+
+                // Sort challenges - newest first
+                filteredChallenges.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+                // Generate HTML
+                challengesTableBody.innerHTML = '';
+
+                if (filteredChallenges.length === 0) {
+                    challengesTableBody.innerHTML = '<tr><td colspan="9" style="text-align: center; padding: 30px; color: #777777;">No challenges found</td></tr>';
+                    return;
+                }
+
+                filteredChallenges.forEach(challenge => {
+                    const row = document.createElement('tr');
+                    row.style.height = '80px';
+
+                    // Status badge
+                    let statusBadge = '';
+                    if (challenge.paid) {
+                        statusBadge = '<span class="badge badge-paid">Paid</span>';
+                    } else if (challenge.completed) {
+                        statusBadge = '<span class="badge badge-completed">Completed</span>';
+                    } else {
+                        statusBadge = '<span class="badge badge-active">Active</span>';
+                    }
+
+                    // Format date
+                    const createdDate = new Date(challenge.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    row.innerHTML = `
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <span style="font-weight: 600; color: #6D6BE3;">#${challenge.id}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <img src="${challenge.imagelink}" alt="${challenge.slot}" style="width: 70px; height: 70px; object-fit: cover; border-radius: 6px;">
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <div style="max-width: 200px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <span style="color: #FFFFFF; font-weight: 500;">${challenge.slot}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <span style="color: #6D6BE3;">${challenge.provider || 'Unknown'}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <span style="color: #FFFFFF;">${challenge.requiredMultiplier}x</span> 
+                                <span style="color: #cccccc; margin: 0 5px;">with</span> 
+                                <span style="color: #F4B740;">$${challenge.minBet}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <span style="color: #3DD598; font-weight: 600; font-size: 16px;">$${challenge.reward}</span>
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                ${statusBadge}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; justify-content: center; align-items: center; height: 100%;">
+                                <div style="max-width: 150px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap;">
+                                    <span style="color: ${challenge.completedBy ? '#FFFFFF' : '#777777'};">${challenge.completedBy || 'Not completed'}</span>
+                                </div>
+                            </div>
+                        </td>
+                        <td class="actions" style="height: 100px; padding: 0;">
+                            <div style="display: flex; gap: 5px; flex-wrap: nowrap; justify-content: center; width: 100%; height: 100%; align-items: center;">
+                                ${!challenge.completed ?
+                            `<button class="btn-complete" onclick="markComplete(${challenge.id})">
+                                        <i class="fas fa-check-circle" style="margin-right: 3px;"></i><span style="font-size: 0.8rem;">Complete</span>
+                                    </button>` :
+                            challenge.completed && !challenge.completedBy ?
+                                `<button class="btn-winner" onclick="openWinnerModal(${challenge.id})">
+                                            <i class="fas fa-trophy" style="margin-right: 3px;"></i><span style="font-size: 0.8rem;">Set Winner</span>
+                                        </button>` :
+                                challenge.completed && !challenge.paid ?
+                                    `<button class="btn-paid" onclick="markPaid(${challenge.id})">
+                                                <i class="fas fa-dollar-sign" style="margin-right: 3px;"></i><span style="font-size: 0.8rem;">Mark Paid</span>
+                                            </button>` :
+                                    `<button class="btn-disabled" disabled>
+                                                <i class="fas fa-check" style="margin-right: 3px;"></i><span style="font-size: 0.8rem;">Completed</span>
+                                            </button>`
+                        }
+                                <button class="btn-delete" onclick="deleteChallenge(${challenge.id})">
+                                    <i class="fas fa-trash-alt" style="margin-right: 3px;"></i><span style="font-size: 0.8rem;">Delete</span>
+                                </button>
+                            </div>
+                        </td>
+                    `;
+
+                    challengesTableBody.appendChild(row);
+                });
+            }
+
+            async function createChallenge(e) {
+                e.preventDefault();
+
+                const formData = {
+                    slot: slotInput.value,
+                    provider: providerInput.value,
+                    imagelink: imagelinkInput.value,
+                    reward: document.getElementById('reward').value,
+                    requiredMultiplier: document.getElementById('requiredMultiplier').value,
+                    minBet: document.getElementById('minBet').value
+                };
+
+                try {
+                    const response = await fetch('/api/admin/challenges', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(formData)
+                    });
+
+                    if (response.ok) {
+                        const newChallenge = await response.json();
+                        challenges.unshift(newChallenge);
+                        displayChallenges();
+                        createChallengeForm.reset();
+                        selectedSlotInfo.style.display = 'none';
+                        showNotification('success', 'Challenge Created', 'The challenge was created successfully');
+                    } else {
+                        const error = await response.json();
+                        throw new Error(error.error || 'Failed to create challenge');
+                    }
+                } catch (error) {
+                    console.error('Error creating challenge:', error);
+                    showNotification('error', 'Creation Failed', error.message || 'Failed to create challenge. Please try again.');
+                }
+            }
+
+            async function searchSlots(query) {
+                try {
+                    const response = await fetch(`/api/searchslot/${encodeURIComponent(query)}`);
+                    const results = await response.json();
+
+                    if (results.length === 0) {
+                        slotSearchResults.innerHTML = '<div class="slot-search-item">No slots found</div>';
+                        slotSearchResults.style.display = 'block';
+                        return;
+                    }
+
+                    slotSearchResults.innerHTML = '';
+                    results.slice(0, 5).forEach(slot => {
+                        const item = document.createElement('div');
+                        item.className = 'slot-search-item';
+                        item.innerHTML = `
+                            <img src="${slot.image_url}" alt="${slot.name}">
+                            <div>
+                                <strong>${slot.name}</strong>
+                                <div class="provider-name">${slot.provider}</div>
+                            </div>
+                        `;
+
+                        item.addEventListener('click', () => {
+                            slotInput.value = slot.name;
+                            providerInput.value = slot.provider;
+                            imagelinkInput.value = slot.image_url;
+                            slotSearchResults.style.display = 'none';
+
+                            // Update and show slot preview
+                            slotPreviewImage.src = slot.image_url;
+                            slotPreviewName.textContent = slot.name;
+                            slotPreviewProvider.textContent = slot.provider;
+                            selectedSlotInfo.style.display = 'block';
+                        });
+
+                        slotSearchResults.appendChild(item);
+                    });
+
+                    slotSearchResults.style.display = 'block';
+                } catch (error) {
+                    console.error('Error searching slots:', error);
+                }
+            }
+
+            // Expose these functions to global scope
+
+            window.filterChallenges = function (filter) {
+                currentFilter = filter;
+
+                // Update button styles
+                const buttons = document.querySelectorAll('.filter-btn');
+                buttons.forEach(btn => {
+                    btn.style.fontWeight = '400';
+                });
+
+                // Add active class to selected filter
+                const activeBtn = document.getElementById(`filter-${filter}`);
+                if (activeBtn) {
+                    activeBtn.style.fontWeight = '600';
+                }
+
+                displayChallenges();
+            };
+
+            window.markComplete = async function (id) {
+                if (!confirm('Are you sure you want to mark this challenge as complete?')) return;
+
+                try {
+                    const response = await fetch(`/api/admin/challenges/${id}/complete`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const updatedChallenge = await response.json();
+                        const index = challenges.findIndex(c => c.id === id);
+                        if (index !== -1) {
+                            challenges[index] = updatedChallenge;
+                        }
+                        displayChallenges();
+                        showNotification('success', 'Challenge Updated', 'Challenge marked as complete!');
+                    } else {
+                        throw new Error('Failed to mark challenge as complete');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('error', 'Update Failed', error.message || 'An error occurred. Please try again.');
+                }
+            };
+
+            window.openWinnerModal = function (id) {
+                winnerChallengeIdInput.value = id;
+                winnerInput.value = '';
+                winnerModal.style.display = 'block';
+            };
+
+            async function setWinner(e) {
+                e.preventDefault();
+
+                const id = winnerChallengeIdInput.value;
+                const winner = winnerInput.value;
+
+                if (!winner || winner.trim() === '') {
+                    showNotification('error', 'Invalid Input', 'Please enter a winner name');
+                    return;
+                }
+
+                try {
+                    console.log('Setting winner:', id, winner);
+
+                    const response = await fetch(`/api/admin/challenges/${id}/winner`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ winner })
+                    });
+
+                    if (response.ok) {
+                        const updatedChallenge = await response.json();
+                        console.log('Updated challenge:', updatedChallenge);
+
+                        const index = challenges.findIndex(c => c.id === parseInt(id));
+                        if (index !== -1) {
+                            challenges[index] = updatedChallenge;
+                        }
+                        displayChallenges();
+                        winnerModal.style.display = 'none';
+                        showNotification('success', 'Winner Updated', 'Winner set successfully!');
+                    } else {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Failed to set winner');
+                    }
+                } catch (error) {
+                    console.error('Error setting winner:', error);
+                    showNotification('error', 'Update Failed', error.message || 'An error occurred. Please try again.');
+                }
+            }
+
+            window.markPaid = async function (id) {
+                if (!confirm('Are you sure you want to mark this challenge as paid?')) return;
+
+                try {
+                    const response = await fetch(`/api/admin/challenges/${id}/paid`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        }
+                    });
+
+                    if (response.ok) {
+                        const updatedChallenge = await response.json();
+                        const index = challenges.findIndex(c => c.id === id);
+                        if (index !== -1) {
+                            challenges[index] = updatedChallenge;
+                        }
+                        displayChallenges();
+                        showNotification('success', 'Payment Updated', 'Challenge marked as paid!');
+                    } else {
+                        throw new Error('Failed to mark challenge as paid');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('error', 'Update Failed', error.message || 'An error occurred. Please try again.');
+                }
+            };
+
+            window.deleteChallenge = async function (id) {
+                if (!confirm('Are you sure you want to delete this challenge? This action cannot be undone.')) return;
+
+                try {
+                    const response = await fetch(`/api/admin/challenges/${id}`, {
+                        method: 'DELETE'
+                    });
+
+                    if (response.ok) {
+                        challenges = challenges.filter(c => c.id !== id);
+                        displayChallenges();
+                        showNotification('success', 'Challenge Deleted', 'Challenge deleted successfully!');
+                    } else {
+                        throw new Error('Failed to delete challenge');
+                    }
+                } catch (error) {
+                    console.error('Error:', error);
+                    showNotification('error', 'Delete Failed', error.message || 'An error occurred. Please try again.');
+                }
+            };
+        });
+    </script>
+</body>
+
+</html>

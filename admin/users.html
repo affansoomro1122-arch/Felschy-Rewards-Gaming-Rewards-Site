@@ -1,0 +1,1427 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - User Management</title>
+    <link rel="stylesheet" href="/css/footerStyle.css">
+    <link rel="stylesheet" href="/css/headerStyle.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- link for font awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="Felschy Rewards admin panel for managing users">
+    <meta name="author" content="Felschy Rewards - Admin">
+
+    <style>
+        :root {
+            --primary: #6D6BE3;
+            --primary-dark: #5C5AD3;
+            --success: #3DD598;
+            --warning: #F4B740;
+            --danger: #FF5C5C;
+            --info: #4273FE;
+            --dark: #13151D;
+            --card-bg: #1C1F2E;
+            --card-darker: #252836;
+            --border-color: #2a2e40;
+            --text-light: #FFFFFF;
+            --text-muted: #8A8D9F;
+            --box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
+        }
+
+        .admin-section {
+            padding: 30px 0;
+            min-height: calc(100vh - 300px);
+        }
+
+        .page-title {
+            color: var(--primary);
+            margin-bottom: 30px;
+            font-weight: 700;
+            font-size: 28px;
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .page-title i {
+            font-size: 24px;
+            opacity: 0.9;
+        }
+
+        .admin-card {
+            background: var(--card-bg);
+            border-radius: 10px;
+            padding: 20px;
+            margin-bottom: 30px;
+            box-shadow: var(--box-shadow);
+            width: 100%;
+            max-width: 100%;
+            overflow: hidden;
+        }
+
+        .admin-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            margin-top: 20px;
+            border-radius: 8px;
+            table-layout: fixed;
+        }
+
+        #usersTableContainer {
+            width: 100%;
+            overflow-x: auto;
+            border-radius: 8px;
+            box-shadow: var(--box-shadow);
+            margin-bottom: 20px;
+        }
+
+        .admin-table th,
+        .admin-table td {
+            padding: 12px 10px;
+            text-align: center;
+            border-bottom: 1px solid var(--border-color);
+            color: var(--text-light);
+            vertical-align: middle;
+            height: 70px;
+            box-sizing: border-box;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
+        }
+
+        .admin-table th {
+            background-color: var(--card-darker);
+            color: var(--primary);
+            font-weight: 600;
+            text-transform: uppercase;
+            font-size: 12px;
+            letter-spacing: 0.5px;
+            text-align: center;
+            padding-top: 20px;
+            padding-bottom: 20px;
+        }
+
+        .admin-table tr {
+            background-color: var(--card-bg);
+            transition: background-color 0.2s ease;
+            height: 70px;
+        }
+
+        .admin-table tr:hover {
+            background-color: var(--card-darker);
+        }
+
+        .admin-table tr:last-child td {
+            border-bottom: none;
+        }
+
+        .admin-table img.avatar {
+            width: 40px;
+            height: 40px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 2px solid #333;
+            display: block;
+            margin: 0 auto;
+        }
+
+        .admin-table .actions {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .admin-table .actions button {
+            padding: 8px 6px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.75rem;
+            transition: all 0.2s ease;
+            width: 90px;
+            height: 32px;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            margin: 2px;
+        }
+
+        .admin-table .btn-ban {
+            background: var(--danger);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(255, 92, 92, 0.3);
+        }
+
+        .admin-table .btn-ban:hover {
+            background: #e04e4e;
+            box-shadow: 0 4px 8px rgba(255, 92, 92, 0.5);
+        }
+
+        .admin-table .btn-unban {
+            background: var(--success);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(61, 213, 152, 0.3);
+        }
+
+        .admin-table .btn-unban:hover {
+            background: #34c085;
+            box-shadow: 0 4px 8px rgba(61, 213, 152, 0.5);
+        }
+
+        .admin-table .btn-admin {
+            background: var(--primary);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(109, 107, 227, 0.3);
+        }
+
+        .admin-table .btn-admin:hover {
+            background: var(--primary-dark);
+            box-shadow: 0 4px 8px rgba(109, 107, 227, 0.5);
+        }
+
+        .admin-table .btn-details {
+            background: var(--info);
+            color: #fff;
+            box-shadow: 0 2px 4px rgba(66, 115, 254, 0.3);
+        }
+
+        .admin-table .btn-details:hover {
+            background: #3563e0;
+            box-shadow: 0 4px 8px rgba(66, 115, 254, 0.5);
+        }
+
+        .badge {
+            display: inline-block;
+            padding: 5px 10px;
+            border-radius: 12px;
+            font-size: 0.8rem;
+            font-weight: 600;
+            min-width: 80px;
+            text-align: center;
+        }
+
+        .badge-admin {
+            background: var(--primary);
+            color: var(--text-light);
+        }
+
+        .badge-user {
+            background: var(--card-darker);
+            color: var(--text-muted);
+            border: 1px solid var(--border-color);
+        }
+
+        .badge-banned {
+            background: var(--danger);
+            color: var(--text-light);
+        }
+
+        .badge-flagged {
+            background: var(--warning);
+            color: #13151D;
+        }
+
+        /* Notification styling */
+        .notification-container {
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-width: 350px;
+        }
+
+        .notification {
+            background: var(--card-bg);
+            border-left: 4px solid var(--primary);
+            padding: 15px;
+            border-radius: 6px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            display: flex;
+            align-items: center;
+            animation: slideIn 0.3s ease forwards;
+            position: relative;
+            overflow: hidden;
+            margin-top: 5px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+
+        .notification.success {
+            border-left-color: var(--success);
+        }
+
+        .notification.error {
+            border-left-color: var(--danger);
+        }
+
+        .notification.warning {
+            border-left-color: var(--warning);
+        }
+
+        .notification .icon {
+            font-size: 20px;
+            margin-right: 12px;
+            color: var(--primary);
+        }
+
+        .notification.success .icon {
+            color: var(--success);
+        }
+
+        .notification.error .icon {
+            color: var(--danger);
+        }
+
+        .notification.warning .icon {
+            color: var(--warning);
+        }
+
+        .notification .content {
+            flex: 1;
+        }
+
+        .notification .title {
+            color: var(--text-light);
+            font-size: 14px;
+            font-weight: 500;
+            margin-bottom: 3px;
+        }
+
+        .notification .message {
+            color: var(--text-muted);
+            font-size: 12px;
+        }
+
+        .notification .progress-bar {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 3px;
+            background: var(--primary);
+            animation: progress 3s linear forwards;
+        }
+
+        .notification.success .progress-bar {
+            background: var(--success);
+        }
+
+        .notification.error .progress-bar {
+            background: var(--danger);
+        }
+
+        .notification.warning .progress-bar {
+            background: var(--warning);
+        }
+
+        @keyframes progress {
+            from {
+                width: 100%;
+            }
+
+            to {
+                width: 0%;
+            }
+        }
+
+        /* Modal styling */
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            overflow: auto;
+            background-color: rgba(0, 0, 0, 0.7);
+        }
+
+        .modal-content {
+            background-color: var(--card-bg);
+            margin: 10% auto;
+            padding: 30px;
+            border-radius: 10px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: 0 5px 25px rgba(0, 0, 0, 0.5);
+            border: 1px solid var(--border-color);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 15px;
+            margin-bottom: 25px;
+        }
+
+        .modal-header h2 {
+            color: var(--primary);
+            margin: 0;
+        }
+
+        .close {
+            color: #aaa;
+            font-size: 28px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: #fff;
+        }
+
+        .user-details {
+            display: grid;
+            grid-template-columns: 1fr 2fr;
+            gap: 20px;
+        }
+
+        .user-avatar {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-avatar img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 50%;
+            border: 3px solid var(--primary);
+        }
+
+        .user-info {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .info-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .info-label {
+            color: var(--text-muted);
+            font-size: 12px;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .info-value {
+            color: var(--text-light);
+            font-size: 16px;
+            font-weight: 500;
+            word-break: break-all;
+        }
+
+        .detail-section {
+            margin-top: 25px;
+            border-top: 1px solid var(--border-color);
+            padding-top: 25px;
+        }
+
+        .detail-section h3 {
+            color: var(--primary);
+            margin-bottom: 15px;
+            font-size: 18px;
+            font-weight: 600;
+        }
+
+        .ip-list {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            max-height: 150px;
+            overflow-y: auto;
+            padding: 0 15px;
+        }
+
+        .ip-item {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            background: var(--card-darker);
+            padding: 10px 15px;
+            border-radius: 6px;
+        }
+
+        /* Filter styles */
+        .filters {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+        }
+
+        .filter-btn {
+            background: var(--card-bg);
+            border: 1px solid var(--border-color);
+            color: var(--text-light);
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: all 0.2s ease;
+        }
+
+        .filter-btn.active {
+            background: var(--card-darker);
+            border-color: var(--primary);
+            box-shadow: 0 2px 8px rgba(109, 107, 227, 0.2);
+        }
+
+        /* Search box styling */
+        .search-container {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 12px 15px 12px 40px;
+            background: var(--card-darker);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            color: var(--text-light);
+            font-size: 14px;
+            transition: all 0.2s ease;
+        }
+
+        .search-input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 2px rgba(109, 107, 227, 0.2);
+            outline: none;
+        }
+
+        .search-icon {
+            position: absolute;
+            left: 15px;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+            font-size: 16px;
+        }
+
+        /* Ban modal styling */
+        .ban-form {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        .ban-form label {
+            color: var(--text-light);
+            font-weight: 500;
+            margin-bottom: 5px;
+            display: block;
+        }
+
+        .ban-form textarea {
+            background: var(--card-darker);
+            border: 1px solid var(--border-color);
+            border-radius: 8px;
+            padding: 12px 15px;
+            color: var(--text-light);
+            resize: vertical;
+            min-height: 100px;
+        }
+
+        .ban-form button {
+            background: var(--danger);
+            color: var(--text-light);
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+            transition: all 0.2s ease;
+            margin-top: 10px;
+        }
+
+        .ban-form button:hover {
+            background: #e04e4e;
+        }
+
+        /* Responsive fixes */
+        @media (max-width: 768px) {
+            .user-details {
+                grid-template-columns: 1fr;
+            }
+
+            .user-avatar {
+                margin-bottom: 20px;
+            }
+
+            .admin-table .actions {
+                flex-direction: column;
+                gap: 5px;
+            }
+
+            .admin-table .actions button {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div style="display: flex;" class="header">
+        <aside class="sidebar closed" id="sidebar">
+            <ul class="nav-links">
+                <div class="flexGrid">
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button class="toggle-btn" id="toggleBtn">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <li>
+                    <a href="/" class="d-flex align-center">
+                        <img src="/images/home.svg" alt="" class="img-fluid">
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/leaderboard" class="d-flex align-center">
+                        <img src="/images/leaderboard.svg" alt="" class="img-fluid">
+                        <span>Leaderboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/raffles" class="d-flex align-center">
+                        <img src="/images/ticket.svg" alt="" class="img-fluid">
+                        <span>Raffles</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/bonusHunt.svg" alt="" class="img-fluid">
+                        <span>Bonus Hunt</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/store.svg" alt="" class="img-fluid">
+                        <span>Store</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/challenges" class="d-flex align-center">
+                        <img src="/images/challenges.svg" alt="" class="img-fluid">
+                        <span>Challenges</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/liveStream.svg" alt="" class="img-fluid">
+                        <span>Live</span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/slots.svg" alt="" class="img-fluid">
+                        <span>Slots</span> <span class="soon">Soon</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/askedQuestions.svg" alt="" class="img-fluid">
+                        <span>Frequently Asked</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center condition">
+                        <img src="/images/term&condition.svg" alt="" class="img-fluid">
+                        <span>Terms of Service</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center exit"><img src="/images/exit.svg" alt="" class="img-fluid">
+                        <span>How to Register</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+            </ul>
+            <div class="branding">
+                <a href="#">
+                    <img src="/images/headerImage.png" alt="" class="img-fluid">
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <header>
+                <div class="container">
+                    <div class="row d-flex align-center justify-between">
+                        <div class="box">
+                            <a href="/">
+                                <img src="/images/headerLogo.png" alt="" class="img-fluid" style="max-width: 143px;">
+                            </a>
+                        </div>
+                        <div class="box">
+                            <div class="btn">
+                                <a href="/admin"><i class="fas fa-tachometer-alt"
+                                        style="margin-right: 5px;"></i>Dashboard</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- Simple admin breadcrumb -->
+            <div style="padding: 15px 0;">
+                <div class="container">
+                    <div style="display: flex; align-items: center; gap: 5px; font-size: 14px; color: #8A8D9F;">
+                        <a href="/" style="color: #8A8D9F; text-decoration: none;"><i class="fas fa-home"></i></a>
+                        <span>/</span>
+                        <a href="/admin" style="color: #8A8D9F; text-decoration: none;">Admin</a>
+                        <span>/</span>
+                        <span style="color: #6D6BE3;">Users</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Admin Content -->
+            <section class="admin-section">
+                <div class="container">
+                    <div class="row">
+                        <h1 class="page-title"><i class="fas fa-users"></i> User Management</h1>
+                    </div>
+
+                    <div class="row">
+                        <div class="admin-card">
+                            <div class="search-container">
+                                <i class="fas fa-search search-icon"></i>
+                                <input type="text" id="userSearch" class="search-input"
+                                    placeholder="Search by username, Twitch ID, or BC.Game username...">
+                            </div>
+
+                            <div class="filters">
+                                <button id="filter-all" class="filter-btn active" onclick="filterUsers('all')">
+                                    All Users
+                                </button>
+                                <button id="filter-admin" class="filter-btn" onclick="filterUsers('admin')">
+                                    <i class="fas fa-user-shield" style="color: var(--primary); margin-right: 5px;"></i>
+                                    Admins
+                                </button>
+                                <button id="filter-banned" class="filter-btn" onclick="filterUsers('banned')">
+                                    <i class="fas fa-ban" style="color: var(--danger); margin-right: 5px;"></i> Banned
+                                </button>
+                                <button id="filter-flagged" class="filter-btn" onclick="filterUsers('flagged')">
+                                    <i class="fas fa-flag" style="color: var(--warning); margin-right: 5px;"></i>
+                                    Flagged
+                                </button>
+                                <button id="filter-new" class="filter-btn" onclick="filterUsers('new')">
+                                    <i class="fas fa-user-plus" style="color: var(--success); margin-right: 5px;"></i>
+                                    New (7d)
+                                </button>
+                            </div>
+
+                            <div id="usersTableContainer">
+                                <table class="admin-table">
+                                    <thead>
+                                        <tr>
+                                            <th style="width: 5%;">ID</th>
+                                            <th style="width: 8%;">Avatar</th>
+                                            <th style="width: 15%;">Username</th>
+                                            <th style="width: 15%;">BC.Game</th>
+                                            <th style="width: 12%;">Status</th>
+                                            <th style="width: 15%;">Registered</th>
+                                            <th style="width: 30%;">Actions</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="usersTableBody">
+                                        <!-- Loading state -->
+                                        <tr>
+                                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                                <i class="fas fa-spinner fa-spin"
+                                                    style="font-size: 24px; color: var(--primary); margin-bottom: 10px;"></i>
+                                                <p style="margin: 0; color: var(--text-muted);">Loading users...</p>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- User Details Modal -->
+            <div id="userDetailsModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>User Details</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <div id="userDetailsContent">
+                        <!-- Will be populated with user details -->
+                    </div>
+                </div>
+            </div>
+
+            <!-- Ban User Modal -->
+            <div id="banModal" class="modal">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h2>Ban User</h2>
+                        <span class="close">&times;</span>
+                    </div>
+                    <form id="banForm" class="ban-form">
+                        <input type="hidden" id="banUserId">
+                        <div>
+                            <label for="banReason">Reason for ban:</label>
+                            <textarea id="banReason" placeholder="Enter reason for banning this user..."></textarea>
+                        </div>
+                        <button type="submit">
+                            <i class="fas fa-ban"></i> Confirm Ban
+                        </button>
+                    </form>
+                </div>
+            </div>
+
+            <footer>
+                <div class="container">
+                    <div class="row rowFirst d-flex justify-between">
+                        <div class="box firstBoxFooter">
+                            <div class="logoContent">
+                                <div class="logo">
+                                    <img src="/images/headerLogo.png" alt="" class="img-fluid" style="width: 140px;">
+                                </div>
+                                <p>© 2025 All Rights Reserved</p>
+                            </div>
+                            <div class="logoPara d-flex align-center">
+                                <img src="/images/bcsmall.svg" alt="" class="img-fluid">
+                                <p>Official <span>BC.Game</span> Ambassador</p>
+                            </div>
+                        </div>
+                        <div class="box d-flex">
+                            <div class="sub-box">
+                                <h1>Platform</h1>
+                                <ul>
+                                    <li><a href="#">Live</a></li>
+                                    <li><a href="#">Leaderboard</a></li>
+                                    <li><a href="#">Raffles</a></li>
+                                    <li><a href="#">Bonus Hunt</a></li>
+                                    <li><a href="#">Store</a></li>
+                                    <li><a href="#">Challenges</a></li>
+                                    <li><a href="#">Stream</a></li>
+                                    <li><a href="#">Rewards</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>About</h1>
+                                <ul>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Gamble Responsibly</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>Community</h1>
+                                <ul class="icons">
+                                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 300 300" fill="none"
+                                            style="vertical-align: middle; position: relative; top: -2px;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M16.667 0H116.667V66.6667H150V33.3333H183.334V0H283.334V100H250V133.333H216.667V166.667H250V200H283.334V300H183.334V266.667H150V233.333H116.667V300H16.667V0Z"
+                                                fill="#797a89" />
+                                        </svg>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row secondRow gambling">
+                        <div class="underline"></div>
+                        <p>18+ | Gamble Responsibly | BeGambleAware. Most people gamble for fun and enjoyment. Do not
+                            think of
+                            gambling as a way to make money. Only gamble with money you can afford to lose. Set a money
+                            and time limit
+                            in advance. Never chase your losses. Don't use gambling to distract yourself from everyday
+                            problems.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+    <!-- Notification container -->
+    <div class="notification-container" id="notificationContainer"></div>
+
+    <script src="/js/header.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Elements
+            const userTableBody = document.getElementById('usersTableBody');
+            const userDetailsModal = document.getElementById('userDetailsModal');
+            const userDetailsContent = document.getElementById('userDetailsContent');
+            const banModal = document.getElementById('banModal');
+            const banForm = document.getElementById('banForm');
+            const banUserId = document.getElementById('banUserId');
+            const banReason = document.getElementById('banReason');
+            const searchInput = document.getElementById('userSearch');
+            const closeBtns = document.querySelectorAll('.close');
+            const notificationContainer = document.getElementById('notificationContainer');
+
+            // Variables
+            let users = [];
+            let filteredUsers = [];
+            let currentFilter = 'all';
+
+            // Initialize
+            fetchUsers();
+
+            // Event listeners
+            searchInput.addEventListener('input', handleSearch);
+            banForm.addEventListener('submit', handleBanUser);
+
+            closeBtns.forEach(btn => {
+                btn.addEventListener('click', function () {
+                    userDetailsModal.style.display = 'none';
+                    banModal.style.display = 'none';
+                });
+            });
+
+            window.addEventListener('click', function (event) {
+                if (event.target === userDetailsModal) {
+                    userDetailsModal.style.display = 'none';
+                }
+                if (event.target === banModal) {
+                    banModal.style.display = 'none';
+                }
+            });
+
+            // Functions
+            async function fetchUsers() {
+                try {
+                    const response = await fetch('/api/admin/users');
+                    if (!response.ok) {
+                        throw new Error('Failed to fetch users');
+                    }
+
+                    users = await response.json();
+                    filteredUsers = [...users]; // Copy all users initially
+                    displayUsers();
+                } catch (error) {
+                    console.error('Error fetching users:', error);
+                    showNotification('error', 'Error', 'Failed to load users. Please try again.');
+                    userTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px;">
+                                <i class="fas fa-exclamation-circle" style="font-size: 24px; color: var(--danger); margin-bottom: 10px;"></i>
+                                <p style="margin: 0 0 10px 0; color: var(--danger);">Failed to load users</p>
+                                <button onclick="fetchUsers()" style="background: var(--primary); color: white; border: none; padding: 8px 16px; border-radius: 4px; cursor: pointer;">
+                                    <i class="fas fa-sync-alt"></i> Retry
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }
+            }
+
+            function displayUsers() {
+                if (filteredUsers.length === 0) {
+                    userTableBody.innerHTML = `
+                        <tr>
+                            <td colspan="7" style="text-align: center; padding: 40px; color: var(--text-muted);">
+                                No users found matching your criteria
+                            </td>
+                        </tr>
+                    `;
+                    return;
+                }
+
+                userTableBody.innerHTML = '';
+
+                filteredUsers.forEach(user => {
+                    const row = document.createElement('tr');
+
+                    // Format date
+                    const createdDate = new Date(user.createdAt).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                    });
+
+                    // User status badge
+                    let statusBadge = '';
+                    if (user.banned) {
+                        statusBadge = '<span class="badge badge-banned">Banned</span>';
+                    } else if (user.isAdmin) {
+                        statusBadge = '<span class="badge badge-admin">Admin</span>';
+                    } else if (user.multiFlagged) {
+                        statusBadge = '<span class="badge badge-flagged">Flagged</span>';
+                    } else {
+                        statusBadge = '<span class="badge badge-user">User</span>';
+                    }
+
+                    // Action buttons based on user status
+                    let actionButtons = '';
+                    if (user.banned) {
+                        actionButtons = `
+                            <button class="btn-unban" onclick="unbanUser(${user.twitchUserId})">
+                                <i class="fas fa-user-check"></i> Unban
+                            </button>
+                        `;
+                    } else {
+                        actionButtons = `
+                            <button class="btn-ban" onclick="openBanModal(${user.twitchUserId})">
+                                <i class="fas fa-ban"></i> Ban
+                            </button>
+                        `;
+                    }
+
+                    // Add admin toggle button
+                    if (user.isAdmin) {
+                        actionButtons += `
+                            <button class="btn-admin" onclick="removeAdmin(${user.twitchUserId})">
+                                <i class="fas fa-user-shield"></i> Remove Admin
+                            </button>
+                        `;
+                    } else {
+                        actionButtons += `
+                            <button class="btn-admin" onclick="makeAdmin(${user.twitchUserId})">
+                                <i class="fas fa-user-shield"></i> Make Admin
+                            </button>
+                        `;
+                    }
+
+                    // Always show details button
+                    actionButtons += `
+                        <button class="btn-details" onclick="showUserDetails(${user.twitchUserId})">
+                            <i class="fas fa-info-circle"></i> Details
+                        </button>
+                    `;
+
+                    row.innerHTML = `
+                        <td>${user.twitchUserId}</td>
+                        <td>
+                            <img src="${user.twitchAvatar}" alt="${user.twitchUsername}" class="avatar">
+                        </td>
+                        <td>
+                            <div style="max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${user.twitchUsername}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="max-width: 100%; white-space: nowrap; overflow: hidden; text-overflow: ellipsis;">
+                                ${user.bcgameUsername || '-'}
+                            </div>
+                        </td>
+                        <td>${statusBadge}</td>
+                        <td>${createdDate}</td>
+                        <td class="actions">${actionButtons}</td>
+                    `;
+
+                    userTableBody.appendChild(row);
+                });
+            }
+
+            function handleSearch() {
+                const searchTerm = searchInput.value.toLowerCase();
+
+                if (searchTerm === '') {
+                    // If search is empty, just apply the current filter
+                    applyFilter(currentFilter);
+                    return;
+                }
+
+                // Filter users based on search term
+                filteredUsers = users.filter(user => {
+                    return (
+                        user.twitchUsername.toLowerCase().includes(searchTerm) ||
+                        user.twitchUserId.toString().includes(searchTerm) ||
+                        (user.bcgameUsername && user.bcgameUsername.toLowerCase().includes(searchTerm)) ||
+                        (user.twitchEmail && user.twitchEmail.toLowerCase().includes(searchTerm))
+                    );
+                });
+
+                // Apply current filter to search results
+                applyFilterToCurrentUsers();
+
+                displayUsers();
+            }
+
+            function applyFilter(filter) {
+                currentFilter = filter;
+
+                // Reset to all users first
+                filteredUsers = [...users];
+
+                // Apply filter
+                applyFilterToCurrentUsers();
+
+                // Update UI
+                document.querySelectorAll('.filter-btn').forEach(btn => {
+                    btn.classList.remove('active');
+                });
+                document.getElementById(`filter-${filter}`).classList.add('active');
+
+                displayUsers();
+            }
+
+            function applyFilterToCurrentUsers() {
+                if (currentFilter === 'admin') {
+                    filteredUsers = filteredUsers.filter(user => user.isAdmin);
+                } else if (currentFilter === 'banned') {
+                    filteredUsers = filteredUsers.filter(user => user.banned);
+                } else if (currentFilter === 'flagged') {
+                    filteredUsers = filteredUsers.filter(user => user.multiFlagged);
+                } else if (currentFilter === 'new') {
+                    // Users from the last 7 days
+                    const weekAgo = new Date();
+                    weekAgo.setDate(weekAgo.getDate() - 7);
+                    filteredUsers = filteredUsers.filter(user => new Date(user.createdAt) >= weekAgo);
+                }
+                // 'all' filter keeps all users
+            }
+
+            function handleBanUser(e) {
+                e.preventDefault();
+
+                const userId = banUserId.value;
+                const reason = banReason.value.trim();
+
+                if (!reason) {
+                    showNotification('warning', 'Error', 'Please provide a reason for the ban');
+                    return;
+                }
+
+                banUser(userId, reason);
+            }
+
+            async function banUser(userId, reason) {
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}/ban`, {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify({ reason })
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to ban user');
+                    }
+
+                    // Update user in the array
+                    const updatedUser = await response.json();
+                    const index = users.findIndex(u => u.twitchUserId.toString() === userId.toString());
+
+                    if (index !== -1) {
+                        users[index] = updatedUser;
+                        applyFilter(currentFilter); // Reapply filter
+                    }
+
+                    banModal.style.display = 'none';
+                    showNotification('success', 'Success', `User ${updatedUser.twitchUsername} has been banned`);
+                } catch (error) {
+                    console.error('Error banning user:', error);
+                    showNotification('error', 'Error', 'Failed to ban user. Please try again.');
+                }
+            }
+
+            async function unbanUser(userId) {
+                if (!confirm('Are you sure you want to unban this user?')) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}/unban`, {
+                        method: 'POST'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to unban user');
+                    }
+
+                    // Update user in the array
+                    const updatedUser = await response.json();
+                    const index = users.findIndex(u => u.twitchUserId === userId);
+
+                    if (index !== -1) {
+                        users[index] = updatedUser;
+                        applyFilter(currentFilter); // Reapply filter
+                    }
+
+                    showNotification('success', 'Success', `User ${updatedUser.twitchUsername} has been unbanned`);
+                } catch (error) {
+                    console.error('Error unbanning user:', error);
+                    showNotification('error', 'Error', 'Failed to unban user. Please try again.');
+                }
+            }
+
+            async function makeAdmin(userId) {
+                if (!confirm('Are you sure you want to make this user an admin?')) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}/makeAdmin`, {
+                        method: 'POST'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to make user admin');
+                    }
+
+                    // Update user in the array
+                    const updatedUser = await response.json();
+                    const index = users.findIndex(u => u.twitchUserId === userId);
+
+                    if (index !== -1) {
+                        users[index] = updatedUser;
+                        applyFilter(currentFilter); // Reapply filter
+                    }
+
+                    showNotification('success', 'Success', `User ${updatedUser.twitchUsername} is now an admin`);
+                } catch (error) {
+                    console.error('Error making user admin:', error);
+                    showNotification('error', 'Error', 'Failed to make user admin. Please try again.');
+                }
+            }
+
+            async function removeAdmin(userId) {
+                if (!confirm('Are you sure you want to remove admin privileges from this user?')) {
+                    return;
+                }
+
+                try {
+                    const response = await fetch(`/api/admin/users/${userId}/removeAdmin`, {
+                        method: 'POST'
+                    });
+
+                    if (!response.ok) {
+                        throw new Error('Failed to remove admin privileges');
+                    }
+
+                    // Update user in the array
+                    const updatedUser = await response.json();
+                    const index = users.findIndex(u => u.twitchUserId === userId);
+
+                    if (index !== -1) {
+                        users[index] = updatedUser;
+                        applyFilter(currentFilter); // Reapply filter
+                    }
+
+                    showNotification('success', 'Success', `Admin privileges removed from ${updatedUser.twitchUsername}`);
+                } catch (error) {
+                    console.error('Error removing admin privileges:', error);
+                    showNotification('error', 'Error', 'Failed to remove admin privileges. Please try again.');
+                }
+            }
+
+            function showUserDetails(userId) {
+                const user = users.find(u => u.twitchUserId === userId);
+
+                if (!user) {
+                    showNotification('error', 'Error', 'User not found');
+                    return;
+                }
+
+                // Format the creation date
+                const createdDate = new Date(user.createdAt).toLocaleDateString('en-US', {
+                    year: 'numeric',
+                    month: 'long',
+                    day: 'numeric',
+                    hour: '2-digit',
+                    minute: '2-digit'
+                });
+
+                // Parse IP addresses
+                let ipAddresses = [];
+                try {
+                    ipAddresses = JSON.parse(user.IPs);
+                } catch (error) {
+                    console.error('Error parsing IPs:', error);
+                }
+
+                userDetailsContent.innerHTML = `
+                    <div class="user-details">
+                        <div class="user-avatar">
+                            <img src="${user.twitchAvatar}" alt="${user.twitchUsername}">
+                            <span style="font-weight: 600; font-size: 18px; color: var(--text-light);">${user.twitchUsername}</span>
+                            ${user.isAdmin ? '<span class="badge badge-admin" style="margin-top: 5px;">Admin</span>' : ''}
+                            ${user.banned ? '<span class="badge badge-banned" style="margin-top: 5px;">Banned</span>' : ''}
+                            ${user.multiFlagged ? '<span class="badge badge-flagged" style="margin-top: 5px;">Flagged</span>' : ''}
+                        </div>
+                        
+                        <div class="user-info">
+                            <div class="info-group">
+                                <span class="info-label">Twitch ID</span>
+                                <span class="info-value">${user.twitchUserId}</span>
+                            </div>
+                            
+                            <div class="info-group">
+                                <span class="info-label">Email</span>
+                                <span class="info-value">${user.twitchEmail || 'Not provided'}</span>
+                            </div>
+                            
+                            <div class="info-group">
+                                <span class="info-label">BC.Game Username</span>
+                                <span class="info-value">${user.bcgameUsername || 'Not provided'}</span>
+                            </div>
+                            
+                            <div class="info-group">
+                                <span class="info-label">Created</span>
+                                <span class="info-value">${createdDate}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    ${user.banned ? `
+                    <div class="detail-section">
+                        <h3>Ban Information</h3>
+                        <div class="info-group">
+                            <span class="info-label">Ban Reason</span>
+                            <span class="info-value">${user.banReason || 'No reason provided'}</span>
+                        </div>
+                    </div>
+                    ` : ''}
+                    
+                    <div class="detail-section">
+                        <h3>Wallet Addresses</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                            <div class="info-group">
+                                <span class="info-label">BTC Address</span>
+                                <span class="info-value">${user.BTCAddress || 'Not provided'}</span>
+                            </div>
+                            
+                            <div class="info-group">
+                                <span class="info-label">ETH Address</span>
+                                <span class="info-value">${user.ETHAddress || 'Not provided'}</span>
+                            </div>
+                            
+                            <div class="info-group">
+                                <span class="info-label">LTC Address</span>
+                                <span class="info-value">${user.LTCAddress || 'Not provided'}</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>IP Addresses</h3>
+                        <div class="ip-list">
+                            ${ipAddresses.length > 0
+                        ? ipAddresses.map(ip => `
+                                    <div class="ip-item">
+                                        <i class="fas fa-network-wired"></i>
+                                        <span>${ip}</span>
+                                    </div>
+                                `).join('')
+                        : '<div style="text-align: center; color: var(--text-muted); padding: 10px;">No IP addresses recorded</div>'
+                    }
+                        </div>
+                    </div>
+                `;
+
+                userDetailsModal.style.display = 'block';
+            }
+
+            function openBanModal(userId) {
+                banUserId.value = userId;
+                banReason.value = '';
+                banModal.style.display = 'block';
+            }
+
+            function showNotification(type, title, message) {
+                const notification = document.createElement('div');
+                notification.className = `notification ${type}`;
+
+                let icon = '';
+                switch (type) {
+                    case 'success':
+                        icon = 'fa-check-circle';
+                        break;
+                    case 'error':
+                        icon = 'fa-exclamation-circle';
+                        break;
+                    case 'warning':
+                        icon = 'fa-exclamation-triangle';
+                        break;
+                    default:
+                        icon = 'fa-info-circle';
+                }
+
+                notification.innerHTML = `
+                    <i class="fas ${icon} icon"></i>
+                    <div class="content">
+                        <div class="title">${title}</div>
+                        <div class="message">${message}</div>
+                    </div>
+                    <div class="progress-bar"></div>
+                `;
+
+                notificationContainer.appendChild(notification);
+
+                // Remove after animation
+                setTimeout(() => {
+                    notification.style.animation = 'slideIn 0.3s ease reverse forwards';
+                    setTimeout(() => {
+                        notification.remove();
+                    }, 300);
+                }, 3000);
+            }
+
+            // Expose functions to global scope for the HTML buttons
+            window.filterUsers = applyFilter;
+            window.showUserDetails = showUserDetails;
+            window.openBanModal = openBanModal;
+            window.banUser = banUser;
+            window.unbanUser = unbanUser;
+            window.makeAdmin = makeAdmin;
+            window.removeAdmin = removeAdmin;
+            window.fetchUsers = fetchUsers;
+        });
+    </script>
+</body>
+
+</html>
