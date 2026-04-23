@@ -1,0 +1,756 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Felschy Rewards - Raffle Lobbies</title>
+    <link rel="stylesheet" href="/css/footerStyle.css">
+    <link rel="stylesheet" href="/css/headerStyle.css">
+    <link rel="stylesheet" href="/css/style.css">
+    <!-- link for font awosemo -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.1/css/all.min.css"
+        integrity="sha512-5Hs3dF2AEPkpNAR7UiOHba+lRSJNeM2ECkwxUIxC1Q/FLycGTbNapWXB4tP889k5T5Ju8fs4b1P5z/iB4nMfSQ=="
+        crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+    <link rel="icon" href="/images/logo.png" type="image/png">
+    <!-- SEO Meta Tags -->
+    <meta name="description"
+        content="Felschy Rewards offers the best casino experience and rewards. Join the excitement with Felschy and BC.Game's collaboration. Discover amazing games and exclusive offers!">
+    <meta name="keywords" content="casino, gambling, rewards, felschy, bcgame, games, slots, poker, blackjack">
+    <meta name="author" content="Felschy Rewards - Leaderboard">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="Feleschy Rewards - Leaderboard">
+    <meta property="og:description"
+        content="Join the excitement with Felschy and BC.Game's collaboration. Discover amazing games and exclusive offers!">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Felschy Rewards - Leaderboard">
+    <meta property="twitter:description"
+        content="Join the excitement with Felschy and BC.Game's collaboration. Discover amazing games and exclusive offers!">
+
+    <meta property="og:url" content="{currentUrl}">
+    <meta property="og:image" content="{screenshotUrl}">
+    <meta property="twitter:url" content="{currentUrl}">
+    <meta property="twitter:image" content="{screenshotUrl}">
+
+</head>
+
+<body class="raffleLobbies">
+    <div style="display: flex;" class="header">
+        <aside class="sidebar closed" id="sidebar">
+            <ul class="nav-links">
+                <div class="flexGrid">
+                    <!-- Search Bar -->
+                    <div class="search-bar">
+                        <i class="fas fa-search"></i>
+                        <input type="text" placeholder="Search...">
+                    </div>
+
+                    <!-- Toggle Button -->
+                    <button class="toggle-btn" id="toggleBtn">
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- <div class="underline"></div> -->
+
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/home.svg" alt="" class="img-fluid">
+                        <span>Home</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="/leaderboard" class="d-flex align-center">
+                        <img src="/images/leaderboard.svg" alt="" class="img-fluid">
+                        <span>Leaderboard</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/ticket.svg" alt="" class="img-fluid">
+                        <span>Raffles</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/bonusHunt.svg" alt="" class="img-fluid">
+                        <span>Bonus Hunt</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/store.svg" alt="" class="img-fluid">
+                        <span>Store</span>
+                    </a>
+                </li>
+                <li class="active">
+                    <a href="/challenges" class="d-flex align-center">
+                        <img src="/images/challenges.svg" alt="" class="img-fluid">
+                        <span>Challenges</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/liveStream.svg" alt="" class="img-fluid">
+                        <span>Live</span>
+                    </a>
+                </li>
+                <li class="disabled">
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/slots.svg" alt="" class="img-fluid">
+                        <span>Slots</span> <span class="soon">Soon</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+                <li>
+                    <a href="#" class="d-flex align-center">
+                        <img src="/images/askedQuestions.svg" alt="" class="img-fluid">
+                        <span>Frequently Asked</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center condition">
+                        <img src="/images/term&condition.svg" alt="" class="img-fluid">
+                        <span>Terms of Service</span>
+                    </a>
+                </li>
+                <li>
+                    <a href="#" class="d-flex align-center exit"><img src="/images/exit.svg" alt="" class="img-fluid">
+                        <span>How to Register</span>
+                    </a>
+                </li>
+                <div class="underline"></div>
+            </ul>
+            <div class="branding">
+                <a href="#">
+                    <img src="/images/headerImage.png" alt="" class="img-fluid">
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content Area -->
+        <div class="main-content">
+            <header>
+                <div class="container">
+                    <div class="row d-flex align-center justify-between">
+                        <div class="box">
+                            <a href="/">
+                                <img src="/images/headerLogo.png" alt="" class="img-fluid" style="max-width: 143px;">
+                            </a>
+                        </div>
+                        <div class="box">
+                            <div class="btn">
+                                <a href="#">Login</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <!-- CODE FOR MAIN CONTENT -->
+            <section class="topRaffle">
+                <div class="container">
+                    <div class="row d-flex align-center justify-between">
+                        <div class="box">
+                            <div class="btn">
+                                <a href="#" class="d-flex align-center">
+                                    <i class="fa-solid fa-angle-left"></i>
+                                    <p>Back</p>
+                                </a>
+                            </div>
+                        </div>
+                        <div class="box d-flex align-center">
+                            <img src="/images/ticket.svg" alt="" class="img-fluid"
+                                style="margin-top: -2px; width: 20px;">
+                            <h4>RAFFLES</h4>
+                        </div>
+                        <div class="box"></div>
+                    </div>
+                </div>
+            </section>
+            <section class="goldenFree">
+                <div class="container">
+                    <div class="row">
+                        <div class="row d-flex">
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a href="#">Join for Free</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a href="#">Join for Free</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a href="#">Join for Free</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a href="#">Join for Free</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a class="d-flex" href="#">
+                                        <p>Join for Free</p> <img src="/images/btnLogo.png" alt="" class="img-fluid">
+                                        <p>10 000</p>
+                                    </a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a class="d-flex" href="#">
+                                        <p>Join for Free</p> <img src="/images/btnLogo.png" alt="" class="img-fluid">
+                                        <p>10 000</p>
+                                    </a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/goldFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="day">13D</span>
+                                        <span id="hour">21H</span>
+                                        <span id="min">10M</span>
+                                        <span id="sec">59S</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn">
+                                    <a class="d-flex" href="#">
+                                        <p>Join for Free</p> <img src="/images/btnLogo.png" alt="" class="img-fluid">
+                                        <p>10 000</p>
+                                    </a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                            <div class="box noBox"></div>
+
+                        </div>
+
+                        <div class="topRow row d-flex align-center">
+                            <img src="/images/laterTime.png" alt="" class="img-fluid">
+                            <p>FINISHED RAFFLES</p>
+                        </div>
+
+
+
+
+
+                        <div class="row d-flex">
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                            <div class="box center">
+                                <img src="/images/grayFree.png" alt="" class="img-fluid goldenImage">
+                                <img src="/images/winCoin.png" alt="" class="img-fluid winCoin">
+                                <h2>$25 Bitcoin Tip</h2>
+                                <div class="timeLeft">
+                                    <div class="clockTime d-flex align-center">
+                                        <img src="/images/timerClock.png" alt="" class="img-fluid">
+                                        <h6>Time Left</h6>
+                                    </div>
+
+                                    <p>
+                                        <span id="finished">Finished</span>
+                                    </p>
+                                </div>
+
+                                <div class="btn grayFreeBtn">
+                                    <a href="#">View Raffle</a>
+                                </div>
+                                <div class="circleLeft"></div>
+                                <div class="circleRight"></div>
+                            </div>
+
+                        </div>
+
+
+                        <div class="row bottomRow d-flex align-center justify-center">
+                            <div class="leftArrow">
+                                <img src="/images/leftArrowRaffle.png" alt="" class="img-fluid">
+                            </div>
+                            <div class="numberOfPage">
+                                <p>10</p>
+                            </div>
+                            <div class="rightArrow">
+                                <img src="/images/rightArrowRaffle.png" alt="" class="img-fluid">
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+
+
+
+
+
+            <footer style="margin-top: 100px;">
+                <div class="container">
+                    <div class="row rowFirst d-flex justify-between">
+                        <div class="box firstBoxFooter">
+                            <div class="logoContent">
+                                <div class="logo">
+                                    <img src="/images/headerLogo.png" alt="" class="img-fluid" style="width: 140px;">
+                                </div>
+                                <p>© 2025 All Rights Reserved</p>
+                            </div>
+                            <div class="logoPara d-flex align-center">
+                                <img src="/images/bcsmall.svg" alt="" class="img-fluid">
+                                <p>Official <span>BC.Game</span> Ambassador</p>
+                            </div>
+                        </div>
+                        <div class="box d-flex">
+                            <div class="sub-box">
+                                <h1>Platform</h1>
+                                <ul>
+                                    <li><a href="#">Live</a></li>
+                                    <li><a href="#">Leaderboard</a></li>
+                                    <li><a href="#">Raffles</a></li>
+                                    <li><a href="#">Bonus Hunt</a></li>
+                                    <li><a href="#">Store</a></li>
+                                    <li><a href="#">Challenges</a></li>
+                                    <li><a href="#">Stream</a></li>
+                                    <li><a href="#">Rewards</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>About</h1>
+                                <ul>
+                                    <li><a href="#">Contact Us</a></li>
+                                    <li><a href="#">Gamble Responsibly</a></li>
+                                    <li><a href="#">FAQ</a></li>
+                                    <li><a href="#">Privacy Policy</a></li>
+                                    <li><a href="#">Terms of Service</a></li>
+                                </ul>
+                            </div>
+                            <div class="sub-box">
+                                <h1>Community</h1>
+                                <ul class="icons">
+                                    <a href="#"><i class="fa-brands fa-x-twitter"></i></a>
+                                    <a href="#"><i class="fa-brands fa-discord"></i></a>
+                                    <a href="#"><i class="fa-brands fa-youtube"></i></a>
+                                    <a href="#">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="15" height="15"
+                                            viewBox="0 0 300 300" fill="none"
+                                            style="vertical-align: middle; position: relative; top: -2px;">
+                                            <path fill-rule="evenodd" clip-rule="evenodd"
+                                                d="M16.667 0H116.667V66.6667H150V33.3333H183.334V0H283.334V100H250V133.333H216.667V166.667H250V200H283.334V300H183.334V266.667H150V233.333H116.667V300H16.667V0Z"
+                                                fill="#797a89" />
+                                        </svg>
+                                    </a>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row secondRow gambling">
+                        <div class="underline"></div>
+                        <p>18+ | Gamble Responsibly | BeGambleAware. Most people gamble for fun and enjoyment. Do not
+                            think of
+                            gambling as a way to make money. Only gamble with money you can afford to lose. Set a money
+                            and time limit
+                            in advance. Never chase your losses. Don't use gambling to distract yourself from everyday
+                            problems.</p>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+    <script src="/js/header.js"></script>
+    <script src="/js/script.js"></script>
+</body>
+
+</html>
